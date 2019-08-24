@@ -31,7 +31,7 @@ class Heap:
         
         if smallest != idx:
             heap_array[idx], heap_array[smallest] = heap_array[smallest], heap_array[idx]
-            min_heapify(heap_array, smallest + 1)
+            cls.min_heapify(heap_array, smallest + 1)
 
 
 
