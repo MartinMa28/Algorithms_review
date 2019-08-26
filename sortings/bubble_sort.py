@@ -6,9 +6,7 @@ def bubble_sort(nums):
             if nums[j] > nums[j + 1]:
                 # In the unsorted part, swap the adjacent pair of elements 
                 # if they are not in the right order.
-                temp = nums[j]
-                nums[j] = nums[j + 1]
-                nums[j + 1] = temp
+                nums[j], nums[j + 1] = nums[j + 1], nums[j]
 
     return nums
 

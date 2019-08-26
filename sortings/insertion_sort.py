@@ -9,9 +9,7 @@ def insertion_sort(nums):
             if nums[ele_idx] > nums[j]:
                 break
             else:
-                temp = nums[ele_idx]
-                nums[ele_idx] = nums[j]
-                nums[j] = temp
+                nums[ele_idx], nums[j] = nums[j], nums[ele_idx]
                 ele_idx = j
     
     return nums
