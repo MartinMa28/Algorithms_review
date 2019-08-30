@@ -36,7 +36,8 @@ class Solution:
                                 found_zero = True
                                 dist_m[i][j] = dist
                                 break
-                        
+                            
+                                                  
                         # If found a zero just asign the distance, else enqueue
                         # 4 adjacent nodes.
                         if not found_zero:
