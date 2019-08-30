@@ -3,7 +3,7 @@ class Solution:
         if matrix == None or matrix == [[]]:
             return [[]]
         
-        queue = []
+        
         rows = len(matrix)
         cols = len(matrix[0])
         directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
@@ -15,12 +15,16 @@ class Solution:
                     continue
                 else:
                     # starts BFS for the first 0 neighbor and count the distance
+                    queue = []
+                    queue.append((i, j, 0))
+                    found_zero = False
                     dist = 0
-                    queue.append((i, j))
-                    while len(queue) > 0:
+                    
+                    while len(queue) > 0 and not found_zero:
                         coor = queue.pop(0)
-                        dist += 1
+                        dist = coor[2] + 1
 
+                        # visit all of adjacent points and find if there is a zero
                         for d in directions:
                             next_row = coor[0] + d[0]
                             next_col = coor[1] + d[1]
@@ -28,12 +32,22 @@ class Solution:
                                 and next_row < rows \
                                 and next_col >= 0 \
                                 and next_col < cols \
-                                and matrix[next_row][next_col] != 0:
-                                queue.append((next_row, next_col))
-                            else:
+                                and matrix[next_row][next_col] == 0:
+                                found_zero = True
+                                dist_m[i][j] = dist
                                 break
-                    
-                    dist_m[i][j] = dist
+                        
+                        # If found a zero just asign the distance, else enqueue
+                        # 4 adjacent nodes.
+                        if not found_zero:
+                            for d in directions:
+                                next_row = coor[0] + d[0]
+                                next_col = coor[1] + d[1]
+                                if next_row >= 0 \
+                                    and next_row < rows \
+                                    and next_col >= 0 \
+                                    and next_col < cols:
+                                    queue.append((next_row, next_col, dist))
         
         return dist_m
 
