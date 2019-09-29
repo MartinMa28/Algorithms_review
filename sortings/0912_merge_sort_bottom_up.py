@@ -28,17 +28,16 @@ class Solution:
         pivot = nums[0]
 
         # i indicates the right end of the smaller part.
-        # It begins at the right end of the array.
-        i = len(nums)
+        # It begins at the left end of the unsorted array.
+        i = 0
 
-        # j is the cursor scans the array from right to left, finding the number
-        # that is larger than pivot.
-        for j in range(len(nums) - 1, 0, -1):
-            if nums[j] > pivot:
-                i -= 1
+        # j is the cursor scans the array from left to right, finding the number
+        # that is smaller than pivot.
+        for j in range(1, len(nums)):
+            if nums[j] <= pivot:
+                i += 1
                 nums[j], nums[i] = nums[i], nums[j]
         
-        i -= 1
         nums[0], nums[i] = nums[i], nums[0]
 
         return i
