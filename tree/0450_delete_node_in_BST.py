@@ -45,26 +45,26 @@ class Solution:
         return (None, None)
 
 
-    def _transplant(self, u: TreeNode,
+    def _transplant(self, root: TreeNode,
+                            u: TreeNode,
                             u_par: TreeNode,
-                            v: TreeNode):
+                            v: TreeNode) -> TreeNode:
         """
         Replace u with v. In other words, u's parent becomes v'parent.
         And we don't care where is u.
         """
         if u_par is None:
             # Special case: u is the root, it doesn't have parent.
-            self.root = v
+            root = v
         else:
             if u is u_par.left:
                 u_par.left = v
             else:
                 u_par.right = v
         
+        return root
 
     def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
-        self.root = root
-        
         node, parent = self._search(root, key)
         
         if node is None:
@@ -72,9 +72,9 @@ class Solution:
             return root
 
         if node.left is None:
-            self._transplant(node, parent, node.right)
+            root = self._transplant(root, node, parent, node.right)
         elif node.right is None:
-            self._transplant(node, parent, node.left)
+            root = self._transplant(root, node, parent, node.left)
         else:
             # Firstly, find the minimum node of the node's right sub-tree.
             min_node, min_node_par = self._minimum(node.right)
@@ -84,15 +84,15 @@ class Solution:
                 # Let the min_node's right child replace min_node.
                 # Note that min_node doesn't have left child.
                 # And then, let deleting target's right child be the min_node's right child.
-                self._transplant(min_node, min_node_par, min_node.right)
+                root = self._transplant(root, min_node, min_node_par, min_node.right)
                 min_node.right = node.right
 
             # Simply replace deleting target node with min_node.
-            self._transplant(node, parent, min_node)
+            root = self._transplant(root, node, parent, min_node)
             # Let the deleting target node's left child be the min_node's left child.
             min_node.left = node.left
         
-        return self.root
+        return root
 
             
 if __name__ == "__main__":
