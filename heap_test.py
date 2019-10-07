@@ -5,8 +5,8 @@ if __name__ == '__main__':
     heapq.heapify(l)
     print(l)
     # update the priority
-    l[len(l) - 1] = (-1, 'g')
+    l[len(l) - 2] = (-1, 'f')
     print(l)
-    heapq._siftdown(l, 0, len(l) - 1)
+    heapq._siftdown(l, 0, len(l) - 2)
     print(l)
 
