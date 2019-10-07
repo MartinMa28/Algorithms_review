@@ -25,6 +25,8 @@ class Solution:
                     itinerary.pop()
                 else:
                     return True
+
+        return False
             
 
     def findItinerary(self, tickets: list) -> list:
