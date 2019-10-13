@@ -1,56 +1,47 @@
+from collections import deque
+
 class Solution:
-    def updateMatrix(self, matrix: list) -> list:
-        if matrix == None or matrix == [[]]:
-            return [[]]
+    def __init__(self):
+        self.directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
+        self.memo = {}
         
         
-        rows = len(matrix)
-        cols = len(matrix[0])
-        directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
-        dist_m = [[0 for _ in range(cols)] for _ in range(rows)]
-
-        for i in range(rows):
-            for j in range(cols):
-                if matrix[i][j] == 0:
-                    continue
+    def _is_safe(self, row, col, height, width):
+        return row >= 0 and row < height and col >= 0 and col < width
+    
+    def _bfs(self, matrix, row, col) -> int:
+        if matrix[row][col] == 0:
+            self.memo[(row, col)] = 0
+            return 0
+        else:
+            queue = deque()
+            
+            queue.append((row, col, 0))
+            
+            while len(queue) > 0:
+                p_r, p_c, l = queue.popleft()
+                if matrix[p_r][p_c] == 0:
+                    self.memo[(p_r, p_c)] = l
+                    return l
                 else:
-                    # starts BFS for the first 0 neighbor and count the distance
-                    queue = []
-                    queue.append((i, j, 0))
-                    found_zero = False
-                    dist = 0
-                    
-                    while len(queue) > 0 and not found_zero:
-                        coor = queue.pop(0)
-                        dist = coor[2] + 1
-
-                        # visit all of adjacent points and find if there is a zero
-                        for d in directions:
-                            next_row = coor[0] + d[0]
-                            next_col = coor[1] + d[1]
-                            if next_row >= 0 \
-                                and next_row < rows \
-                                and next_col >= 0 \
-                                and next_col < cols \
-                                and matrix[next_row][next_col] == 0:
-                                found_zero = True
-                                dist_m[i][j] = dist
-                                break
-                            
-                                                  
-                        # If found a zero just asign the distance, else enqueue
-                        # 4 adjacent nodes.
-                        if not found_zero:
-                            for d in directions:
-                                next_row = coor[0] + d[0]
-                                next_col = coor[1] + d[1]
-                                if next_row >= 0 \
-                                    and next_row < rows \
-                                    and next_col >= 0 \
-                                    and next_col < cols:
-                                    queue.append((next_row, next_col, dist))
+                    for d in self.directions:
+                        if self._is_safe(p_r + d[0], p_c + d[1], len(matrix), len(matrix[0])):
+                            if (p_r + d[0], p_c + d[1]) not in self.memo:
+                                queue.append((p_r + d[0], p_c + d[1], l + 1))
+                            else:
+                                self.memo[(p_r, p_c)] = self.memo[(p_r + d[0], p_c + d[1])] + 1
+                                return self.memo[(p_r, p_c)]
+            
+            
+    
+    def updateMatrix(self, matrix: list) -> list:
+        dist = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
         
-        return dist_m
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                dist[i][j] = self._bfs(matrix, i, j)
+                
+        return dist
 
 if __name__ == "__main__":
     solu = Solution()
