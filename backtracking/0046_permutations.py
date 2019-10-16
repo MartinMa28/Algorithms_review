@@ -1,19 +1,27 @@
 class Solution:
+    def __init__(self):
+        self.results = []
+
+
+    def _dfs(self, remaining: list, seq: list) -> None:
+        if len(remaining) == 0:
+            self.results.append(seq.copy())
+
+        for idx, n in enumerate(remaining):
+            seq.append(n)
+            new_remaining = remaining[:idx] + remaining[idx + 1:]
+            self._dfs(new_remaining, seq)
+            
+            # backtracking
+            seq.pop()
+
+
     def permute(self, nums: list) -> list:
-        res = []
+        self._dfs(nums, [])
 
-        def _backtrack(nums: list, seq: list) -> None:
-            if len(nums) == 0:
-                res.append(seq)
-            else:
-                for idx, n in enumerate(nums):
-                    _backtrack(nums[:idx] + nums[idx + 1:], seq + [n])
-
-        _backtrack(nums, [])
-
-        return res
+        return self.results
 
 
 if __name__ == "__main__":
     solu = Solution()
-    print(solu.permute([1, 2, 3]))
+    print(solu.permute([1, 2, 3, 4]))
