@@ -1,42 +1,30 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
+        if len(s) <= 1:
+            return s
+        
+        length = len(s)
         longest_pal = ''
-
-        # to get 2n - 1 insertion positions, and exclude the len(s) - 0.5
-        i = 0
-        while i <= len(s) - 1:
-            if i % 1 > 1e-4:
-                # i is in the middle
-                if s[int(i - 0.5)] == s[int(i + 0.5)]:
-                    pal = s[int(i - 0.5)] + s[int(i + 0.5)]
-                    if len(pal) > len(longest_pal):
-                            longest_pal = pal
-                    left = int(i - 0.5) - 1
-                    right = int(i + 0.5) + 1
-
-                    while left >= 0 and right < len(s) and s[left] == s[right]:
-                        pal = s[left] + pal + s[right]
-                        if len(pal) > len(longest_pal):
-                            longest_pal = pal
-                        left -= 1
-                        right += 1
+        for i in range(2 * length - 1):
+            # get the index of center
+            if i % 2 == 0:
+                left = i // 2 - 1
+                right = i // 2 + 1
             else:
-                # i points to a character
-                pal = s[int(i)]
-                if len(pal) > len(longest_pal):
-                    longest_pal = pal
+                left = i // 2
+                right = i // 2 + 1
                 
-                left = int(i) - 1
-                right = int(i) + 1
-
-                while left >= 0 and right < len(s) and s[left] == s[right]:
-                    pal = s[left] + pal + s[right]
-                    if len(pal) > len(longest_pal):
-                        longest_pal = pal
+            while left >= 0 and right < length:
+                if s[left] == s[right]:
+                    if right - left + 1 > len(longest_pal):
+                        longest_pal = s[left : right + 1]
                     left -= 1
                     right += 1
-            
-            i += 0.5
+                else:
+                    break
+                    
+        if longest_pal == "":
+            longest_pal = s[0]
         
         return longest_pal
 
