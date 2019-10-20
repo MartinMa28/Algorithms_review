@@ -29,28 +29,24 @@ class ListNode:
 
 class Solution:
     def mergeKLists(self, lists: list) -> ListNode:
-        if lists == []:
-            return None
+        # get rid of None in lists
+        lists = filter(lambda l: l, lists)
         
-        # min heap q
-        hq = []
-        cnt = count(0)
-        for list_node in lists:
-            if list_node:
-                heapq.heappush(hq, (list_node.val, next(cnt), list_node))
-
-        head = ListNode(-999)
-        head_copy = head
-
-        while len(hq) > 0:
-            min_node = heapq.heappop(hq)
-            
-            head.next = min_node[2]
-            if min_node[2].next:
-                heapq.heappush(hq, (min_node[2].next.val, next(cnt), min_node[2].next))
+        res_list = ListNode(777)
+        head = res_list
+        cnt = count()
+        heap = [(l.val, next(cnt), l) for l in lists]
+        
+        heapq.heapify(heap)
+        
+        while len(heap) > 0:
+            node_val, _, popped_list = heapq.heappop(heap)
+            head.next = ListNode(node_val)
             head = head.next
-
-        return  head_copy.next
+            if popped_list.next:
+                heapq.heappush(heap, (popped_list.next.val, next(cnt), popped_list.next))
+                
+        return res_list.next
                 
 
 if __name__ == "__main__":
@@ -76,7 +72,9 @@ if __name__ == "__main__":
     merged = solu.mergeKLists([l01, l11, l22])
     
     while merged.next:
-        print(merged.val)
+        print(merged.val, end=' ')
         merged = merged.next
+
+    print()
 
 
