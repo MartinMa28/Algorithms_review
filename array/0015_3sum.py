@@ -12,7 +12,7 @@ class Solution:
 
         return res
 
-    def threeSum(self, nums: list) -> list:
+    def threeSum_two_sum_base(self, nums: list) -> list:
         solutions = set()
         for idx, n in enumerate(nums):
             res = self._two_sum(nums[0: idx] + nums[idx + 1:], -1 * n)
@@ -26,6 +26,31 @@ class Solution:
 
         return [list(s) for s in solutions]
         
+    def threeSum(self, nums: list) -> list:
+        nums = sorted(nums)
+        res = set()
+        
+        for i in range(0, len(nums) - 2):
+            low = i + 1
+            high = len(nums) - 1
+
+            while low < high:
+                total = nums[i] + nums[low] + nums[high]
+                if total == 0:
+                    triplet = (nums[i], nums[low], nums[high])
+                    if triplet not in res:
+                        res.add(triplet)
+                    
+                    low += 1
+                    high -= 1
+
+                elif total < 0:
+                    low += 1
+                else:
+                    high -= 1
+                    
+        
+        return [list(t) for t in list(res)]
 
 if __name__ == "__main__":
     solu = Solution()
