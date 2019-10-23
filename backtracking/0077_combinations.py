@@ -1,28 +1,23 @@
 class Solution:
-    def __init__(self):
-        self.combs = []
-
-    def _dfs(self, cur_num, cur_comb, n, k):
-        if k - len(cur_comb) > n - cur_num + 1:
+    def _dfs(self, k, cur_comb, nums, combs) -> None:
+        if len(cur_comb) == k:
+            combs.append(cur_comb.copy())
             return
         else:
-            if len(cur_comb) == k:
-                if cur_comb not in self.combs:
-                    self.combs.append(cur_comb.copy())
-            else:
-                for num in range(cur_num + 1, n + 1):
-                    cur_comb.append(num)
-                    self._dfs(num, cur_comb, n, k)
-                    # backtracking
+            for idx, cur_num in enumerate(nums):
+                if k - len(cur_comb) <= len(nums):
+                    # There are enough numbers to combine together.
+                    cur_comb.append(cur_num)
+                    self._dfs(k, cur_comb, nums[idx + 1:], combs)
                     cur_comb.pop()
-            
-
+    
     def combine(self, n: int, k: int) -> list:
-        self._dfs(0, [], n, k)
-
-        return self.combs
+        combs = []
+        self._dfs(k, [], list(range(1, n + 1)), combs)
+        
+        return combs
 
 
 if __name__ == "__main__":
     solu = Solution()
-    print(solu.combine(5, 5))
+    print(solu.combine(5, 2))

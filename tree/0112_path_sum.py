@@ -28,18 +28,17 @@ class Solution:
         
         
     
-    def hasPathSum(self, root: TreeNode, sum: int) -> bool:
+    def hasPathSum(self, root: TreeNode, given_sum: int) -> bool:
         if root == None:
             return False
         
-        sum -= root.val
-        if root.left == None and root.right == None:
-            if sum == 0:
+        if self._is_leaf(root):
+            if root.val == given_sum:
                 return True
             else:
                 return False
-        
-        return self.hasPathSum(root.left, sum) or self.hasPathSum(root.right, sum)
+            
+        return self.hasPathSum(root.left, given_sum - root.val) or self.hasPathSum(root.right, given_sum - root.val)
 
     
     def _is_leaf(self, node):
