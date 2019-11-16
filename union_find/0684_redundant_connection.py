@@ -1,4 +1,4 @@
-class UnionFind:
+class DisjointSet:
     
     class Node:
         def __init__(self, x):
@@ -14,13 +14,13 @@ class UnionFind:
     def make_set_by_edges(self, edges):
         for e in edges:
             if e[0] not in self.num_to_node:
-                self.num_to_node[e[0]] = UnionFind.Node(e[0])
+                self.num_to_node[e[0]] = DisjointSet.Node(e[0])
                 
             if e[1] not in self.num_to_node:
-                self.num_to_node[e[1]] = UnionFind.Node(e[1])
+                self.num_to_node[e[1]] = DisjointSet.Node(e[1])
             
     
-    def _find(self, node: 'UnionFind.Node') -> 'UnionFind.Node':
+    def _find(self, node: 'DisjointSet.Node') -> 'DisjointSet.Node':
         if node == node.parent:
             return node
         
@@ -53,7 +53,7 @@ class UnionFind:
             
 class Solution:
     def findRedundantConnection(self, edges: list) -> list:
-        uf = UnionFind()
+        uf = DisjointSet()
         uf.make_set_by_edges(edges)
         
         for e in edges:
