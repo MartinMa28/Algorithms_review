@@ -11,6 +11,9 @@ Weekly contest 163
 - Find Elements in a Contaminated Binary Tree
 - Greatest Sum Divisible by Three (Trying 2d DP TLE)
 
-Cheapest Flights Within K Stops (Single source shorest path with the limit of hops) Dijkstra algorithm
+Cheapest Flights Within K Stops: (Single source shorest path with the limit of hops) Dijkstra algorithm
 
-
+### Nov.17 2019
+Valid Palindrome: check if the alphanumeric characters in a string form a palindrome.
+Valid Palindrome 2: two pointer squeeze to the middle. Greedy algorithm, only allows inequality once.
+Review merge sort & quick sort
