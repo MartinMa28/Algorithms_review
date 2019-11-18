@@ -14,6 +14,6 @@ Weekly contest 163
 Cheapest Flights Within K Stops: (Single source shorest path with the limit of hops) Dijkstra algorithm
 
 ### Nov.17 2019
-Valid Palindrome: check if the alphanumeric characters in a string form a palindrome.
-Valid Palindrome 2: two pointer squeeze to the middle. Greedy algorithm, only allows inequality once.
+Valid Palindrome: check if the alphanumeric characters in a string form a palindrome.  
+Valid Palindrome 2: two pointer squeeze to the middle. Greedy algorithm, only allows inequality once.  
 Review merge sort & quick sort
