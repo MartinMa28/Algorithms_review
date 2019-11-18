@@ -1,17 +1,20 @@
-def quick_sort(nums):
+def quick_sort(nums, start, end):
     if nums == []:
         return
 
-    pivot_idx = _partition(nums)
+    if start >= end:
+        return
 
-    quick_sort(nums[:pivot_idx])
-    quick_sort(nums[pivot_idx + 1:])
+    pivot_idx = _partition(nums, start, end)
+
+    quick_sort(nums, start, pivot_idx - 1)
+    quick_sort(nums, pivot_idx + 1, end)
 
 
-def _partition(nums):
-    pivot = nums[0]
-    i = 0
-    j = 1
+def _partition(nums, start, end):
+    pivot = nums[start]
+    i = start
+    j = start + 1
 
     while j < len(nums):
         if nums[j] > pivot:
@@ -21,13 +24,13 @@ def _partition(nums):
             i += 1
             j += 1
 
-    nums[i], nums[0] = nums[0], nums[i]
+    nums[i], nums[start] = nums[start], nums[i]
 
     return i
 
     
 if __name__ == "__main__":
-    l = [5, 1, 3, 11, -9, 66]
+    l = [12, -4, 5, 6, -1, 9, 4, -3, 7]
     print(l)
-    quick_sort(l)
+    quick_sort(l, 0, len(l) - 1)
     print(l)
