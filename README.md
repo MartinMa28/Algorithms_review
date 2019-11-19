@@ -17,3 +17,10 @@ Cheapest Flights Within K Stops: (Single source shorest path with the limit of h
 Valid Palindrome: check if the alphanumeric characters in a string form a palindrome.  
 Valid Palindrome 2: two pointer squeeze to the middle. Greedy algorithm, only allows inequality once.  
 Review merge sort & quick sort
+
+### Nov.18 2019
+Fixed the bug in quick sort. When swapping values in-place, don't use slicing. Use the index instead.  
+Kind of knowing how to implement Tarjan algorithm to find all of articulation points.  
+Coin Exchange 2: Unbounded knapsack problem  
+Remove Invalid Parentheses: BFS with 2 queues find all of candidates level be level  
+Kth Smallest Element in a Sorted Matrix: Using binary search or min heap  
