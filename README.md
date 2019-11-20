@@ -24,3 +24,14 @@ Kind of knowing how to implement Tarjan algorithm to find all of articulation po
 Coin Exchange 2: Unbounded knapsack problem  
 Remove Invalid Parentheses: BFS with 2 queues find all of candidates level be level  
 Kth Smallest Element in a Sorted Matrix: Using binary search or min heap  
+
+### Nov.19 2019
+Basic Calculator II: Use a queue to evaluate an expression, which doesn't contain parentheses.  
+Basic Calculator: Use a stackt to evaluate an expression, which does have parentheses, but only has plus and minus operators.  
+Integer Break & Rod Cut: Similar to unbounded knapsack problem, 1 dimensional dynamic programming.  
+Cut Ribbon: Find the proper length of the ribbon using binary search.  
+All Nodes Distance K in Binary Tree: Convert a binary tree (acyclic connected directed graph) to an undirected graph. And then find the nodes using BFS.  
+
+#### TBD
+Word Ladder  
+Binary Tree Maximum Path Sum
