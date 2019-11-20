@@ -3,43 +3,37 @@ from collections import deque
 class Solution:
     
     def _make_masks(self, word):
-        masks = []
-        for idx, ch in enumerate(word):
-            masks.append(word[:idx] + '*' + word[idx + 1:])
-            
-        return masks
-        
-    def _build_graph(self, word_list):
+        for i in range(len(word)):
+            mask = word[:i] + '*' + word[i + 1:]
+            yield mask
+
+    def ladderLength(self, beginWord: str, endWord: str, wordList: list) -> int:
+        # build an adjacent list
         graph = {}
         
-        for word in word_list:
-            masks = self._make_masks(word)
-            for m in masks:
-                if m in graph:
-                    graph[m].append(word)
+        for word in wordList:
+            for mask in self._make_masks(word):
+                if mask not in graph:
+                    graph[mask] = [word]
                 else:
-                    graph[m] = [word]
+                    graph[mask].append(word)
                     
-        return graph
-    
-    def ladderLength(self, beginWord: str, endWord: str, wordList:list) -> int:
-        graph = self._build_graph(wordList)
-        
-        queue = deque([(beginWord, 1)])
+        queue = deque()
         visited = set()
+        visited.add(beginWord)
+        queue.append((beginWord, 1))
         
         while len(queue) > 0:
-            pop_word, pop_len = queue.popleft()
-            visited.add(pop_word)
-            if pop_word == endWord:
-                return pop_len
+            popped, trans = queue.popleft()
             
-            masks = self._make_masks(pop_word)
+            if popped == endWord:
+                return trans
             
-            for m in masks:
-                if m in graph:
-                    for w in graph[m]:
-                        if w not in visited:
-                            queue.append((w, pop_len + 1))
+            for mask in self._make_masks(popped):
+                if mask in graph:
+                    for neighbor in graph[mask]:
+                        if neighbor not in visited:
+                            queue.append((neighbor, trans + 1))
+                            visited.add(neighbor)
                         
         return 0
