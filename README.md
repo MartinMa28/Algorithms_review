@@ -35,3 +35,17 @@ All Nodes Distance K in Binary Tree: Convert a binary tree (acyclic connected di
 #### TBD
 Word Ladder (Done)  
 Binary Tree Maximum Path Sum (Done)
+
+### Nov.20 2019
+Word Ladder: BFS find the shortest path (the minimum number of hops). Create masks for each word to build the graph.  
+Binary Tree Maximum Path Sum: Find the path using bottom up traversal. Always update the maximum sum variable.  
+Count Univalue Subtrees: Bottom up traversal.  
+Unique Binary Search Trees: Dynamic programming. Given the number of nodes, count the number of unique BST. BST is used to reduce different permutation of nodes.  
+3 Sum: Multiple 2-Sum & two pointers  
+Binary Search Tree Iterator: inorder traverse the BST.  
+
+#### TBD
+Distribute Coins in Binary Tree  
+3 Sum Closest  
+Iterative inorder traversal  
+More DP questions  
