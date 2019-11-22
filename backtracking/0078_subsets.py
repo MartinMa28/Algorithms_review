@@ -15,7 +15,6 @@ class Solution:
             
     
     def subsets(self, nums: list) -> list:
-        nums.sort()
         self._backtrack(nums, [])
 
         return self.res
