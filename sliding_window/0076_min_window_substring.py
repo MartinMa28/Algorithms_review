@@ -1,63 +1,47 @@
-from collections import deque
-
 class Solution:
-    def _is_valid(self, hm, hm_t):
-        for val, t_val in zip(hm.values(), hm_t.values()):
-            if val < t_val:
+    def _contains_all(self, t_dict, s_dict):
+        for k in t_dict:
+            if k in s_dict:
+                if t_dict[k] > s_dict[k]:
+                    return False
+            else:
                 return False
             
         return True
-    
-    def _list_to_str(self, l):
-        ret = ''
-        for c in l:
-            ret += c
-            
-        return ret
+
     
     def minWindow(self, s: str, t: str) -> str:
-        hm_t = {}
-        
-        for ch in t:
-            hm_t[ch] = hm_t.get(ch, 0) + 1
-            
-        if len(t) == 0 or s == '':
+        if t == '':
             return ''
         
+        t_cnt = {}
+        s_cnt = {}
+        
+        for ch in t:
+            t_cnt[ch] = t_cnt.get(ch, 0) + 1
+        
         left = 0
-        right = left
-        hm = {}
+        right = 0
         
-        for k in hm_t:
-            hm[k] = 0
-        
-        cur = deque()
+        min_substr = ''
         min_len = float('inf')
-        min_s = ''
         
-        while right <= len(s):
-            if not self._is_valid(hm, hm_t):
-                if right == len(s):
-                    break
-                cur.append(s[right])
-                if s[right] in hm:
-                    hm[s[right]] += 1
-
+        while right < len(s):
+            while not self._contains_all(t_cnt, s_cnt) and right < len(s):
+                s_cnt[s[right]] = s_cnt.get(s[right], 0) + 1
                 right += 1
-            else:
-                while True:
-                    if len(cur) < min_len:
-                        min_len = len(cur)
-                        min_s = self._list_to_str(cur)
-
-                    popped = cur.popleft()
-                    if popped in hm:
-                        hm[popped] -= 1
-
-                    if not self._is_valid(hm, hm_t):
-                        break
             
-        return min_s
+            # right points to an extra character
+            while self._contains_all(t_cnt, s_cnt):
+                if (right - left) < min_len:
+                    min_substr = s[left:right]
+                    min_len = len(min_substr)
+                
+                s_cnt[s[left]] -= 1
+                left += 1
+                
+                    
+        return min_substr
         
         
 if __name__ == "__main__":

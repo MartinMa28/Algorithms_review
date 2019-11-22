@@ -45,7 +45,12 @@ Unique Binary Search Trees: Dynamic programming. Given the number of nodes, coun
 Binary Search Tree Iterator: inorder traverse the BST.  
 
 #### TBD
-Distribute Coins in Binary Tree (Done)
-3 Sum Closest  
-Iterative inorder traversal  
-More DP questions  
+Distribute Coins in Binary Tree (Done)  
+3 Sum Closest  (Done)
+Iterative inorder traversal  (Done)  
+Paint House II O(nk) O(nk^2) right now  
+Longest Valid Parentheses  
+House Robber II  
+
+More binary search  
+More sliding window  
