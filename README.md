@@ -75,3 +75,7 @@ Combinations: backtracking
 Combination Sum: backtracking  
 Permutations: backtracking  
 Permutations 2: backtracking  
+
+## Nov.22 2019
+Practice more binary search questions.
+Refresh the meaning of left <= right, left < right and left + 1 < right  

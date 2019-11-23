@@ -7,16 +7,18 @@ class Solution:
         right = len(nums) - 1
         
         while left < right:
-            mid = (left + right) // 2
+            mid = left + ((right - left) >> 1)
             
             if nums[mid] > nums[right]:
                 left = mid + 1
-            else:
+            elif nums[mid] < nums[right]:
                 right = mid
+            else:
+                right -= 1
                 
         return nums[left]
 
 
 if __name__ == "__main__":
     solu = Solution()
-    solu.findMin([4,5,6,0,1,2,3])
+    print(solu.findMin([2, 2, 2, 0, 1]))
