@@ -79,3 +79,20 @@ Permutations 2: backtracking
 ## Nov.22 2019
 Practice more binary search questions.
 Refresh the meaning of left <= right, left < right and left + 1 < right  
+
+## Nov.23 2019
+Find Kth smallest pair distance: Find the Kth smallest pair using binary search. Use two pointer to count the number of smaller pairs in a sorted list.  
+Course Schedule: Use DFS detect if there is a cycle in the directed graph.  
+Course Schdule 2: Use BFS and in-degree to get the topological sort of the graph.  
+Minimum Time Visiting All Points: Compute the moves needed between two points. And then add the number of moves together.  
+Count Servers that Communicate: If at least two servers connected in a row or column, add those connected coordinates into a hash set. Return the number of elements in the hash set.  
+Search Suggestions System: Use the startswith method in python, haven't tried trie.  
+Number of Ways to Stay in the Same Place After Some Steps: top-down DP, the sub-problem is to find how many ways we could move from current index to the 0 position using a certain amount of steps.  
+More binary tree questions regarding recursion.  
+
+### TBD
+House Robber III  
+Split BST  
+More substring, subsequence DP  
+Trie  
+Prepare for the resume  

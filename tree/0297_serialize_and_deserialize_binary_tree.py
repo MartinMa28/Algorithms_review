@@ -8,14 +8,16 @@ class TreeNode(object):
         self.right = None
 
 class Codec:
-    
+    def __init__(self):
+        self.enc = []
+        
     def _preorder(self, root):
-        if root == None:
-            return 'X,'
+        if root:
+            self.enc.append(root.val)
+            self._preorder(root.left)
+            self._preorder(root.right)
         else:
-            return '{},'.format(root.val) + \
-                    self._preorder(root.left) + \
-                    self._preorder(root.right)
+            self.enc.append(None)
 
     def serialize(self, root):
         """Encodes a tree to a single string.
@@ -23,22 +25,23 @@ class Codec:
         :type root: TreeNode
         :rtype: str
         """
+        self.enc = []
+        self._preorder(root)
         
-        return self._preorder(root)[:-1]
+        return ','.join(map(lambda x: str(x), self.enc))
 
     
-    def _build_nodes(self, queue):
-        """
-        Deserialize the tree in the same order (preorder) as the serialzation.
-        """
+    def _deserialize(self, queue):
         popped = queue.popleft()
-        if popped == 'X':
+        
+        if popped == 'None':
             return None
-        node = TreeNode(int(popped))
-        node.left = self._build_nodes(queue)
-        node.right = self._build_nodes(queue)
-
-        return node
+        else:
+            root = TreeNode(int(popped))
+            root.left = self._deserialize(queue)
+            root.right = self._deserialize(queue)
+            
+            return root
     
     def deserialize(self, data):
         """Decodes your encoded data to tree.
@@ -46,9 +49,9 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        q = deque(data.split(','))
+        enc = deque(data.split(','))
         
-        return self._build_nodes(q)
+        return self._deserialize(enc)
         
         
         
