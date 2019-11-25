@@ -91,8 +91,8 @@ Number of Ways to Stay in the Same Place After Some Steps: top-down DP, the sub-
 More binary tree questions regarding recursion.  
 
 ### TBD
-House Robber III  
-Split BST  
+House Robber III (Done) 
+Split BST  (Done)
 More substring, subsequence DP  
 Trie  
 Prepare for the resume  
