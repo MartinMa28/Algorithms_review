@@ -12,7 +12,7 @@ class Solution:
                 
         return -1
     
-    def search(self, nums: list, target: int) -> int:
+    def search(self, nums: List[int], target: int) -> int:
         if nums == []:
             return -1
         
