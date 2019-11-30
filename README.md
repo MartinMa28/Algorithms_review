@@ -97,7 +97,7 @@ More substring, subsequence DP
 Trie  
 Prepare for the resume  
 
-## Nov.30 2019
+## Nov.29 2019
 Sliding window maximum: maintain a monotonic queue using double ended queue, kick out smaller elements when enqueuing new elements  
 Sliding Puzzle: BFS + hash set + deepcopy when using composite object  
 Word Break: DFS + memoization  
