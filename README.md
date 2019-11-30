@@ -96,3 +96,16 @@ Split BST  (Done)
 More substring, subsequence DP  
 Trie  
 Prepare for the resume  
+
+## Nov.30 2019
+Sliding window maximum: maintain a monotonic queue using double ended queue, kick out smaller elements when enqueuing new elements  
+Sliding Puzzle: BFS + hash set + deepcopy when using composite object  
+Word Break: DFS + memoization  
+Maximum Product Subarray: strange DP, need to review  
+Maximal Square: DFS + memo (super slow), DP fixes each position as the bottom right corner, so only needs to check 3 direction  
+LRU Cache: hash table helps fast look ups, double linked list helps fast removals  
+
+### TBD
+Word Break II  
+More subarray, subsequence DP  
+Pratice runtime analysis  
