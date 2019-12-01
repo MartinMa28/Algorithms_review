@@ -109,3 +109,12 @@ LRU Cache: hash table helps fast look ups, double linked list helps fast removal
 Word Break II  
 More subarray, subsequence DP  
 Pratice runtime analysis  
+
+
+## Nov.30 2019
+Weekly contest 165:
+- Find winner on a tic tac toe: simulation problem  
+- Number of Burgers with No Waste of Ingredients: linear equation of two unknown  
+- Count Square Submatrices with All Ones: Similar to Maximal Square (221)  
+Reverse Linked List: recursively put current node at the end of the reversed the rest of nodes  
+Minimum Height Trees: Trim leaves. After trimming each leaf, check if deleting it creates a new leaf. If so, put the new leaf in another queue. In this way, we could avoid traversing all of nodes in a tree.  
