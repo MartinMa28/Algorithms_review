@@ -21,6 +21,32 @@ class Solution:
         
         return dp[m][n]
 
+    def __init__(self):
+        self.memo = {}
+    
+    def longestCommonSubsequence_top_down(self, text1: str, text2: str) -> int:
+        if (text1, text2) in self.memo:
+            return self.memo[(text1, text2)]
+        
+        if text1 == text2:
+            self.memo[(text1, text2)] = len(text1)
+            return len(text1)
+        
+        if text1 == '' or text2 == '':
+            self.memo[(text1, text2)] = 0
+            return 0
+        
+        if text1[0] == text2[0]:
+            res = self.longestCommonSubsequence(text1[1:], text2[1:]) + 1
+            self.memo[(text1, text2)] = res
+            return res
+        else:
+            keep_text1 = self.longestCommonSubsequence(text1, text2[1:])
+            keep_text2 = self.longestCommonSubsequence(text1[1:], text2)
+            
+            self.memo[(text1, text2)] = max((keep_text1, keep_text2))
+            return max((keep_text1, keep_text2))
+
 if __name__ == "__main__":
     solu = Solution()
     solu.longestCommonSubsequence('ace', 'abcde')

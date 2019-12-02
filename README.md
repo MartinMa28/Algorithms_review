@@ -119,3 +119,14 @@ Weekly contest 165:
 
 Reverse Linked List: recursively put current node at the end of the reversed the rest of nodes  
 Minimum Height Trees: Trim leaves. After trimming each leaf, check if deleting it creates a new leaf. If so, put the new leaf in another queue. In this way, we could avoid traversing all of nodes in a tree.  
+
+## Dec.1 2019
+Mock interview:
+- Word ladder: create the adjacent list using mask, BFS find the shortest path
+- Minimum deletion: top down dp + memoization, similar to LCS
+
+Longest Common Subsequence: If current characters are the same, get the LCS from the rest of those two strings + 1. Otherwise, compare the LCS got from keep str1 and str2, return the longer one.  
+
+### TBD
+Longest Common Substring - top down solution  
+Think of singleton in Python  
