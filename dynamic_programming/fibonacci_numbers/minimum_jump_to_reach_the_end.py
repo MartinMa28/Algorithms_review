@@ -1,4 +1,4 @@
-def count_min_jumps(jumps):
+def count_min_jumps_top_down(jumps):
     memo = {}
 
     def _top_down(jumps):
@@ -21,6 +21,17 @@ def count_min_jumps(jumps):
     return _top_down(jumps)
   
 
+def count_min_jumps(jumps):
+    dp = [float('inf')] * len(jumps)
+    dp[0] = 0
+
+    for i in range(len(jumps)):
+        for step in range(1, jumps[i] + 1):
+            if i + step < len(dp):
+                dp[i + step] = min((dp[i + step], dp[i] + 1))
+
+
+    return dp[-1]
 
 def main():
 
