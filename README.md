@@ -131,3 +131,17 @@ Longest Common Subsequence: If current characters are the same, get the LCS from
 Longest Common Substring - top down solution  
 Think of singleton in Python  
 Course Schedule II  (DFS/BFS for topological sort)  
+
+## Dec.19 2019
+Subtree of Another Tree: Top-down preorder traversal  
+Broken Calculator: Backward greedy, faster than BFS and DP  
+Find All Numbers Disappeared in An Array: save if a number appears or not using the index  
+LRU Cache: hash map for O(1) search, double linked list for O(1) deletion  
+Binary Tree Vertical Order Traversal: Get the column index of nodes using pre-order traversal, populate the vertical traversal using level order traversal (BFS).  
+
+## Dec.20 2019
+Valid Number: 
+- strip whitespace
+- if the string has '+' or '-' as the first character, check the other characters
+- if the string has only one 'e', the left must be float number, the right must be integer 
+- Otherwise, the string must be a float number
