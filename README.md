@@ -145,3 +145,14 @@ Valid Number:
 - if the string has '+' or '-' as the first character, check the other characters
 - if the string has only one 'e', the left must be float number, the right must be integer 
 - Otherwise, the string must be a float number
+
+Evaluate Reverse Polish Notation: push all of operands into a stack, when meeting an operator, evaluate the binary operator and push the result into stack.  
+
+## Dec.21 2019
+Reverse Words in a String:  
+There are a few ways to reverse a list:
+- reversed() built-in method
+- iterator slicing
+- using stack
+
+Reverse Words in a String: Firstly, reverse all of characters. And then, reverse the characters of each word back to the correct order (spell). In-place solution is implemented using in-place swap + recursive swap by range.  
