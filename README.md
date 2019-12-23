@@ -156,3 +156,6 @@ There are a few ways to reverse a list:
 - using stack
 
 Reverse Words in a String: Firstly, reverse all of characters. And then, reverse the characters of each word back to the correct order (spell). In-place solution is implemented using in-place swap + recursive swap by range.  
+
+## Dec.22 2019
+Course Schedule 1&2: Solved by using topological sort using DFS or in-degree BFS. When using DFS, to make leaf nodes stay behind their ancestors, save the nodes in a reversed order using stack.  
