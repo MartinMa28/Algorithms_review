@@ -159,3 +159,12 @@ Reverse Words in a String: Firstly, reverse all of characters. And then, reverse
 
 ## Dec.22 2019
 Course Schedule 1&2: Solved by using topological sort using DFS or in-degree BFS. When using DFS, to make leaf nodes stay behind their ancestors, save the nodes in a reversed order using stack.  
+Inorder Successor: using recursion or iterative in-order traversal (stack)  
+Inorder Successor 2: using recursion, check the first larger parent  
+Flatten Nested List Iterator: recursion  
+String Compression: Read from the head, in the meanwhile remove it. Add the compressed character at the end.  
+Is Graph Bipartite: BFS, check neighbors don't belong to the same group.  
+Grumpy Bookstore owner: get the max improvement using sliding window  
+
+### TBD
+Jump Game 1 & 2
