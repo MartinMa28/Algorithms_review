@@ -1,49 +1,52 @@
 class Solution:
+
     def __init__(self):
-        self.reach = {}
-
-    def _can_jump(self, idx):
-        if idx in self.reach:
-            return self.reach[idx]
-        else:
-            if self.nums[idx] >= len(self.nums) - 1 - idx:
-                self.reach[idx] = True
-                return True
-            else:
-                for i in range(self.nums[idx]):
-                    if self._can_jump(idx + i + 1):
-                        return True
-                
-                self.reach[idx] = False
-                return False
+        self.memo = {}
     
-    def canJump(self, nums: list) -> bool:
-        self.nums = nums
-
-        return self._can_jump(0)
+    def _can_jump(self, nums, pos) -> bool:
+        if pos in self.memo:
+            return self.memo[pos]
+        
+        if pos >= len(nums) - 1:
+            return True
+        
+        for i in range(1, nums[pos] + 1):
+            if self._can_jump(nums, pos + i):
+                self.memo[pos] = True
+                return True
+        
+        self.memo[pos] = False
+        return False
+        
+    
+    def canJump_top_down(self, nums: list) -> bool:
+        return self._can_jump(nums, 0)
 
     def canJump_bottom_up(self, nums: list) -> bool:
-        memo = ['unknown' for _ in range(len(nums))]
-        memo[-1] = 'good'
-
-        for i in range(len(nums) - 2, -1, -1):
-            furthest = min((i + nums[i], len(nums) - 1))
-            for j in range(i + 1, furthest + 1):
-                if memo[j] == 'good':
-                    memo[i] = 'good'
-                    break
-
-        return memo[0] == 'good'
-
-    def canJump_greedy(self, nums: list) -> bool:
-        left_most_good = len(nums) - 1
-
-        for i in range(len(nums) - 2, -1, -1):
-            if i + nums[i] >= left_most_good:
-                left_most_good = i
+        if len(nums) == 1:
+            return True
         
-        return left_most_good == 0
+        dp = [0] * len(nums)
+        
+        for pos in range(len(nums) - 1, -1, -1):
+            for i in range(1, nums[pos] + 1):
+                if pos + i >= len(nums) - 1 or dp[pos + i]:
+                    dp[pos] = 1
+                    
+        return dp[0]
 
+    def canJump_1d_DP(self, nums: list) -> bool:
+        if len(nums) == 1:
+            return True
+        
+        left_most_reachable = len(nums) - 1
+        
+        for pos in range(len(nums) - 2, -1, -1):
+            if pos + nums[pos] >= left_most_reachable:
+                left_most_reachable = pos
+            
+                    
+        return left_most_reachable == 0
 
 if __name__ == "__main__":
     solu = Solution()
