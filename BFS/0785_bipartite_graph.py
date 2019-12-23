@@ -1,41 +1,24 @@
 from collections import deque
 
 class Solution:
-    
-    def _bfs(self, v, graph, colors):
-        # 0 - blue, 1 - red
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        color = [-1] * len(graph)
         
-        queue = deque([v])
-        colors[v] = 0
-        while len(queue):
-            popped = queue.popleft()
-            for neighbor in graph[popped]:
-                if neighbor not in colors:
-                    colors[neighbor] = 1 - colors[popped]
-                    queue.append(neighbor)
-                elif colors[neighbor] == colors[popped]:
-                    return False
-                else:
-                    # neighbor has the opposite color, valid
-                    continue
-        
-        return True
-            
-        
-    
-    def isBipartite(self, edges: list) -> bool:
-        graph = {}
-        colors = {}
-        
-        for idx, con in enumerate(edges):
-            graph[idx] = con
-            
-        for v_i in range(len(edges)):
-            if len(colors) == len(edges):
-                break
-            
-            if v_i not in colors:
-                if not self._bfs(v_i, graph, colors):
-                    return False
+        for vertex in range(len(graph)):
+            if color[vertex] == -1:
+                # has not been visited yet
+                queue = deque([vertex])
+                color[vertex] = 0
+                
+                while queue:
+                    popped = queue.popleft()
+                    popped_color = color[popped]
+                    
+                    for neighbor in graph[popped]:
+                        if color[neighbor] == -1:
+                            queue.append(neighbor)
+                            color[neighbor] = (1 - popped_color)
+                        elif color[neighbor] != (1 - popped_color):
+                            return False
         
         return True
