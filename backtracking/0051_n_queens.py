@@ -1,72 +1,47 @@
 class Solution:
     def __init__(self):
-        self.results = []
-    
-    def _is_safe(self, row, col) -> bool:
-        if sum(self.board[row]) > 0:
+        self.ans = []
+        self.cols = set()
+        
+    def _is_valid(self, queens, row, col):
+        if col in self.cols:
             return False
         
-        if sum([r[col] for r in self.board]) > 0:
-            return False
-
-        for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
-            if self.board[i][j] == 1:
+        for q in queens:
+            if abs(q[0] - row) / abs(q[1] - col) == 1:
                 return False
-
-        for i,j in zip(range(row, len(self.board)), range(col, len(self.board))):
-            if self.board[i][j] == 1:
-                return False
-
-        for i, j in zip(range(row, len(self.board)), range(col, -1, -1)):
-            if self.board[i][j] == 1:
-                return False
-
-        for i,j in zip(range(row, -1, -1), range(col, len(self.board))):
-            if self.board[i][j] == 1:
-                return False
-
+        
         return True
-
     
-    def _place_queen(self, row, col):
-        self.board[row][col] = 1
-
-    
-    def _remove_queen(self, row, col):
-        self.board[row][col] = 0
-
-    def _backtracking(self, row):
-        if row == len(self.board):
-            self.results.append(self._str_transfer())
+    def _backtrack(self, queens, row, n):
+        if row == n:
+            self.ans.append(queens[:])
             return
-
-        for col in range(len(self.board[0])):
-            if self._is_safe(row, col):
-                self._place_queen(row, col)
-                self._backtracking(row + 1)
-                self._remove_queen(row, col)
-
-
-    def _str_transfer(self) -> list:
-        ret = []
-        for row in self.board:
-            s = ''
-            for n in row:
-                if n == 0:
-                    s += '.'
-                else:
-                    s += 'Q'
+        
+        for col in range(n):
+            if self._is_valid(queens, row, col):
+                queens.append((row, col))
+                self.cols.add(col)
+                
+                self._backtrack(queens, row + 1, n)
+                
+                # backtrack
+                queens.pop()
+                self.cols.discard(col)
             
-            ret.append(s)
-
-        return ret
-
-    def solveNQueens(self, n: int) -> list:
-        self.board = [[0 for _ in range(n)] for _ in range(n)]
-
-        self._backtracking(0)
-
-        return self.results
+    def _transform(self, queens):
+        res = []
+        
+        for q in queens:
+            line = '.' * q[1] + 'Q' + '.' * (len(queens) - 1 - q[1])
+            res.append(line)
+            
+        return res
+    
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        self._backtrack([], 0, n)
+        return map(self._transform, self.ans)
+        
         
 
 if __name__ == "__main__":

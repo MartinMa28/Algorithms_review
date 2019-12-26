@@ -1,5 +1,5 @@
 class Solution:
-    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+    def fullJustify(self, words: list, maxWidth: int) -> list:
         """
         pick as much words as possible, each word is followed by a space
         """
