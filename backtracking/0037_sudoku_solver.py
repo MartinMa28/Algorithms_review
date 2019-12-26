@@ -1,70 +1,66 @@
+from collections import defaultdict
+
 class Solution:
-    def _backtrack(self, board, row, col) -> bool:
-        if col == 9:
-            # At the last column
-            if row == 8:
-                # At the bottom right corner, found the result
-                return True
-            
-            # Check the next line's first entry
-            row += 1
-            col = 0
-            return self._backtrack(board, row, col)
-        elif board[row][col] != '.':
-            return self._backtrack(board, row, col + 1)
-        else:
-            for n in range(1, 10):
-                n = str(n)
-                board[row][col] = n
-                if self._is_valid(board, row, col):
-                    if self._backtrack(board, row, col + 1):
-                        return True
-                    
-                # backtrack
-                board[row][col] = '.'
-            
+    
+    def __init__(self):
+        self.row_nums = defaultdict(set)
+        self.col_nums = defaultdict(set)
+        self.square_nums = defaultdict(set)
+    
+    def _validate(self, board, r_i, c_i, n) -> bool:
+        if n in self.row_nums[r_i] or n in self.col_nums[c_i] or\
+            n in self.square_nums[(r_i // 3, c_i // 3)]:
             return False
-            
-    def _is_valid(self, board, row, col):
-        # Check the row.
-        unique = set()
-        for num in board[row]:
-            if num != '.':
-                if num in unique:
-                    return False
-                else:
-                    unique.add(num)
         
-        # Check the column.
-        unique.clear()
-        for num in [row[col] for row in board]:
-            if num != '.':
-                if num in unique:
-                    return False
-                else:
-                    unique.add(num)
-                    
-        top_left_row = (row // 3) * 3
-        top_left_col = (col // 3) * 3
+        board[r_i][c_i] = n
+        self.row_nums[r_i].add(n)
+        self.col_nums[c_i].add(n)
+        self.square_nums[(r_i // 3, c_i // 3)].add(n)
         
-        # Check the 3x3 box.
-        unique.clear()
-        for i in range(3):
-            for j in range(3):
-                num = board[top_left_row + i][top_left_col + j]
-                if num != '.':
-                    if num in unique:
-                        return False
-                    else:
-                        unique.add(num)
-                        
         return True
     
+    def _remove_num(self, board, row, col):
+        n = board[row][col]
+        board[row][col] = '.'
+        
+        self.row_nums[row].discard(n)
+        self.col_nums[col].discard(n)
+        self.square_nums[(row // 3, col // 3)].discard(n)
+    
+    def _backtrack(self, board, row, col):
+        if col < 9:
+            if board[row][col] == '.':
+                for i in range(1, 10):
+                    if self._validate(board, row, col, str(i)):
+                        if self._backtrack(board, row, col + 1):
+                            return True
+
+                    self._remove_num(board, row, col)
+                    
+
+                return False
+            else:
+                return self._backtrack(board, row, col + 1)
+        else:
+            row += 1
+            col = 0
+            
+            if row == 9:
+                return True
+            else:
+                return self._backtrack(board, row, col)
+    
     def solveSudoku(self, board: list) -> None:
-        """
-        Do not return anything, modify board in-place instead.
-        """
+        for i in range(9):
+            for j in range(9):
+                num = board[i][j]
+                if num != '.':
+                    self.row_nums[i].add(num)
+                    self.col_nums[j].add(num)
+                    self.square_nums[(i // 3, j // 3)].add(num)
+        
         self._backtrack(board, 0, 0)
+        
 
 
 if __name__ == "__main__":

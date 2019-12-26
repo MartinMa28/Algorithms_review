@@ -1,61 +1,42 @@
 class Solution:
-    def fullJustify(self, words: list, maxWidth: int) -> list:
-        line_ch_cnt = 0
-        line_words = []
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        """
+        pick as much words as possible, each word is followed by a space
+        """
         res = []
         word_idx = 0
         
-        while word_idx < len(words):
-            w = words[word_idx]
+        while True:
+            chars = len(words[word_idx])
+            line = [words[word_idx]]
+            word_idx += 1
             
-            if line_ch_cnt + len(w) <= maxWidth:
-                line_words.append(w)
-                line_ch_cnt += len(w) + 1
+            # include as many words as possible for this line
+            while word_idx < len(words) and chars + len(words[word_idx]) + 1 <= maxWidth:
+                chars += len(words[word_idx]) + 1
+                line.append(words[word_idx])
                 word_idx += 1
+            
+            # If it's not the last line, add spaces between words
+            if word_idx < len(words):
+                spaces = maxWidth - sum([len(w) for w in line])
+                s_line = ''
+                num_spaces = len(line) - 1
+                
+                for w in line:
+                    s_line += w
+                    if num_spaces > 0:
+                        space_len = spaces // num_spaces + (spaces % num_spaces > 0)
+                        s_line += ' ' * space_len
+                        spaces -= space_len
+                        num_spaces -= 1
+                
+                res.append(s_line + ' ' * (maxWidth - len(s_line)))
             else:
-                spaces = maxWidth - sum([len(w) for w in line_words])
-
-                if len(line_words) == 1:
-                    l = line_words[0] + ' ' * spaces
-                    res.append(l)
-                    line_words = []
-                    line_ch_cnt = 0
-                else:
-                    avg_space = spaces / (len(line_words) - 1)
-
-                    if int(avg_space) == avg_space:
-                        # Spaces are evenly distributed.
-
-                        l = ''
-                        for w in line_words[:-1]:
-                            l += w + ' ' * int(avg_space)
-                        l += line_words[-1]
-
-                        res.append(l)
-                        line_words = []
-                        line_ch_cnt = 0
-
-                    else:
-                        l = ''
-                        for idx, w in enumerate(line_words):
-                            if spaces == 0:
-                                l += w
-                            elif (spaces / (len(line_words) - 1 - idx)) % 1 > 0:
-                                l += w + ' ' * (int(avg_space) + 1)
-                                spaces -= int(avg_space) + 1
-                            else:
-                                l += w + ' ' * int(avg_space)
-                                spaces -= int(avg_space)
-                        res.append(l)
-                        line_words = []
-                        line_ch_cnt = 0
-                        
-        l = ''
-        for w in line_words[:-1]:
-            l += w + ' '
-        
-        l += line_words[-1]
-        l += ' ' * (maxWidth - len(l))
-        res.append(l)
-                                
+                # In the last line, don't add extra spaces, and break the while loop.
+                s_line = ' '.join(line)
+                s_line += ' ' * (maxWidth - len(s_line))
+                res.append(s_line)
+                break
+                
         return res
