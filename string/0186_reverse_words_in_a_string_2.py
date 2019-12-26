@@ -1,33 +1,27 @@
 class Solution:
     
-    def _swap(self, s, i, j):
-        s[i], s[j] = s[j], s[i]
-        
-    def _swap_by_range(self, s, start_idx, end_idx):
-        if start_idx < end_idx:
-            self._swap(s, start_idx, end_idx)
-            self._swap_by_range(s, start_idx + 1, end_idx - 1)
+    def _reverse_by_range(self, s, start, end):
+        while start < end:
+            s[start], s[end] = s[end], s[start]
+            start += 1
+            end -= 1
     
-    def reverseWords(self, s: list) -> None:
+    
+    def reverseWords(self, s: List[str]) -> None:
         """
-        Do not return anything, modify s in-place instead.
+        Firstly, reverse the whole string.
+        And then reverse each word back to it's correct order.
         """
-        if not s:
-            return
-        else:
-            self._swap_by_range(s, 0, len(s) - 1)
+        self._reverse_by_range(s, 0, len(s) - 1)
+        
+        start = 0
+        end = 0
+        while end < len(s):
+            while end < len(s) and s[end] != ' ':
+                end += 1
             
-            # swap each back to the correct spell
-            left = 0
-            right = left + 1
-            
-            while left <= len(s) - 1 and right <= len(s) - 1:
-                if s[right] == ' ':
-                    self._swap_by_range(s, left, right - 1)
-                    left = right + 1
-                    right = right + 2
-                else:
-                    right += 1
-                    
-            # swap the last word
-            self._swap_by_range(s, left, right - 1)
+            self._reverse_by_range(s, start, end - 1)
+            start = end + 1
+            end = end + 1
+        
+        
