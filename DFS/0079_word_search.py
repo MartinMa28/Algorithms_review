@@ -1,47 +1,41 @@
 class Solution:
+    
     def __init__(self):
         self.directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
-        self.found = False
-        self.visited = set()
     
-    def _on_board(self, row, col):
-        return row >= 0 and row < len(self.board) \
-                and col >= 0 and col < len(self.board[0])
-
+    def _on_board(self, board, row, col):
+        return row >= 0 and row < len(board) and col >= 0 and col < len(board[0])
     
-    def _dfs(self, row, col, idx) -> bool:
-        if self._on_board(row, col) and (row, col) not in self.visited:
-            if self.board[row][col] == self.word[idx]:
-                self.visited.add((row, col))
-                if idx == len(self.word) - 1:
-                    return True
+    def _dfs(self, board, word, idx, row, col):
+        if idx == len(word):
+            return True
+        else:
+            if self._on_board(board, row, col) and board[row][col] == word[idx]:
+                board[row][col] = '$'
                 
                 for d in self.directions:
-                    new_row = d[0] + row
-                    new_col = d[1] + col
-                    
-                    if self._dfs(new_row, new_col, idx + 1):
+                    new_row = row + d[0]
+                    new_col = col + d[1]
+
+                    if self._dfs(board, word, idx + 1, new_row, new_col):
                         return True
                 
-                # backtracking
-                self.visited.discard((row, col))
-        
-        return False
-                        
+                board[row][col] = word[idx]
+                return False
+            else:
+                return False
     
-    def exist(self, board: list, word: list) -> bool:
-        if board == None or board == [] or board == [[]]:
+    def exist(self, board: list, word: str) -> bool:
+        if not board:
             return False
-        
-        self.board = board
-        self.word = word
         
         for i in range(len(board)):
             for j in range(len(board[0])):
-                if self._dfs(i, j, 0):
+                if self._dfs(board, word, 0, i, j):
                     return True
-                
+        
         return False
+
 if __name__ == "__main__":
     solu = Solution()
     print(solu.exist([["a","a","a","a"],["a","a","a","a"],["a","a","a","a"]], "aaaaaaaaaaaaa"))
