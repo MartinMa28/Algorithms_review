@@ -5,11 +5,8 @@ class Trie:
             self.children = [None] * 26
             
         def insert(self, word):
-            if len(word) == 1:
-                if self.children[ord(word[0]) - 97]:
-                    self.children[ord(word[0]) - 97].is_end = True
-                else:
-                    self.children[ord(word[0]) - 97] = Trie.Node(True)
+            if not word:
+                self.is_end = True
             else:
                 if self.children[ord(word[0]) - 97]:
                     self.children[ord(word[0]) - 97].insert(word[1:])

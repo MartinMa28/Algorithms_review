@@ -3,28 +3,26 @@ class Solution:
     def __init__(self):
         self.memo = {}
     
-    def _word_break(self, s: str) -> list:
+    def _dfs(self, s, words) -> tuple:
+        if s == '':
+            return True, ['']
+        
         if s in self.memo:
             return self.memo[s]
         
-        if s == '':
-            return ['']
+        ans = []
+        for word in words:
+            if s.startswith(word):
+                found, word_break = self._dfs(s[len(word):], words)
+                if found:
+                    ans.extend([word + ' ' + wb for wb in word_break])
+
+        self.memo[s] = len(ans) > 0, ans
+        return len(ans) > 0, ans
+                    
         
-        res = []
-        for i in range(len(s)):
-            check = s[i:]
-            if check in self.word_dict:
-                sub_results = self._word_break(s[:i])
-                
-                res.extend([s_r + check + ' ' for s_r in sub_results])
-            else:
-                continue
-        
-        self.memo[s] = res
-        return res
-                
-                
-    
     def wordBreak(self, s: str, wordDict: list) -> list:
-        self.word_dict = set(wordDict)
-        return [ans[:-1] for ans in self._word_break(s)]
+        ans = self._dfs(s, wordDict)[1]
+        return [a[:-1] for a in ans]
+                
+        
