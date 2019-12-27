@@ -3,14 +3,14 @@ class Solution:
     def __init__(self):
         self.directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
     
-    def _on_board(self, board, row, col):
-        return row >= 0 and row < len(board) and col >= 0 and col < len(board[0])
+    def _on_board(self, row, col):
+        return row >= 0 and row < self.rows and col >= 0 and col < self.cols
     
     def _dfs(self, board, word, idx, row, col):
         if idx == len(word):
             return True
         else:
-            if self._on_board(board, row, col) and board[row][col] == word[idx]:
+            if self._on_board(row, col) and board[row][col] == word[idx]:
                 board[row][col] = '$'
                 
                 for d in self.directions:
@@ -25,10 +25,12 @@ class Solution:
             else:
                 return False
     
-    def exist(self, board: list, word: str) -> bool:
+    def exist(self, board: List[List[str]], word: str) -> bool:
         if not board:
             return False
         
+        self.rows = len(board)
+        self.cols = len(board[0])
         for i in range(len(board)):
             for j in range(len(board[0])):
                 if self._dfs(board, word, 0, i, j):
