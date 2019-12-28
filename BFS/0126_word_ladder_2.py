@@ -1,7 +1,8 @@
-from collections import deque
+from collections import deque, defaultdict
 
 class Solution:
-    def _make_masks(self, s: str) -> list:
+    @staticmethod
+    def _make_masks(s: str) -> list:
         masks = []
         
         for i in range(len(s)):
@@ -12,52 +13,36 @@ class Solution:
     
     
     def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
-        graph = {}
+        graph = defaultdict(list)
         
-        for w in wordList:
-            for m in self._make_masks(w):
-                if m not in graph:
-                    graph[m] = [w]
-                else:
-                    graph[m].append(w)
-        
-        
-        odd_q = deque([(beginWord,)])
-        even_q = deque()
-        res = []
+        for word in wordList:
+            for mask in self._make_masks(word):
+                graph[mask].append(word)
+                
         visited = set()
+        queue = deque([(beginWord, [beginWord])])
         found = False
+        res = []
         
-        while (len(odd_q) > 0 or len(even_q) > 0) and (not found):
-            if len(odd_q) > 0:
-                while len(odd_q) > 0:
-                    popped = odd_q.popleft()
-                    visited.add(popped[-1])
-                    if popped[-1] == endWord:
+        while queue:
+            next_level = []
+            while queue:
+                popped, cur_path = queue.popleft()
+                visited.add(popped)
+                if popped == endWord:
+                    if not found:
                         found = True
-                        res.append(popped[:])
                     
-                    if not found:
-                        for m in self._make_masks(popped[-1]):
-                            if m in graph:
-                                for neighbor in graph[m]:
-                                    if neighbor not in visited:
-                                        even_q.append(popped + (neighbor,))
-            else:
-                while len(even_q) > 0:
-                    popped = even_q.popleft()
-                    visited.add(popped[-1])
-                    if popped[-1] == endWord:
-                        found = True
-                        res.append(popped[:])
-                        
-                    if not found:
-                        for m in self._make_masks(popped[-1]):
-                            if m in graph:
-                                for neighbor in graph[m]:
-                                    if (neighbor not in visited):
-                                        odd_q.append(popped + (neighbor,))
-                                        
+                    res.append(cur_path)
+                
+                for mask in self._make_masks(popped):
+                    for neighbor in graph[mask]:
+                        if neighbor not in visited and not found:
+                            next_level.append((neighbor, cur_path + [neighbor]))
+            
+            if not found:
+                queue = deque(next_level)
+            
         return res
 
 
