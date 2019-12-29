@@ -2,56 +2,41 @@ from collections import defaultdict
 
 class Solution:
     def __init__(self):
-        self.cnt = 0
+        self.critical_edges = []
+        self.discover_time = {}
+        self.low_time = {}
     
-    def single_node_failure(self, n: int, connections: list) -> list:
-        # build an adjacent graph
-        graph = defaultdict(list)
-        
-        for e in connections:
-            graph[e[0]].append(e[1])
-            graph[e[1]].append(e[0])
-            
-        visited = set()
-        dfn = [-1 for _ in range(n)]
-        low = [float('inf') for _ in range(n)]
-        parent = [-1 for _ in range(n)]
-        children_cnt = [0 for _ in range(n)]
-        results = []
-        
-        for i in range(n):
-            if i not in visited:
-                self._dfs(i, graph, visited, dfn, low, parent, children_cnt, results)
-                
-        return results
-    
-    
-    def _dfs(self, vertex, graph, visited, dfn, low, parent, children_cnt, results):
+    def _dfs(self, graph, vertex, parent, cur_time, visited):
+        self.discover_time[vertex] = cur_time
+        self.low_time[vertex] = cur_time
         visited.add(vertex)
-        dfn[vertex] = self.cnt
-        low[vertex] = self.cnt
-        self.cnt += 1
         
         for neighbor in graph[vertex]:
-            if neighbor not in visited:
-                parent[neighbor] = vertex
-                children_cnt[vertex] += 1
+            if neighbor != parent:
+                if neighbor not in visited:
+                    cur_time + 1
+                    self._dfs(graph, neighbor, vertex, cur_time + 1, visited)
                 
-                self._dfs(neighbor, graph, visited, dfn, low, parent, children_cnt, results)
-                low[vertex] = min((low[vertex], low[neighbor]))
+                self.low_time[vertex] = min((self.low_time[vertex], self.low_time[neighbor]))
                 
-                if parent[vertex] == -1:
-                    # vertex is the root node
-                    if children_cnt[vertex] >= 2:
-                        if dfn[vertex] <= low[neighbor]:
-                            results.append(vertex)        
-                else:
-                    if dfn[vertex] <= low[neighbor]:
-                        results.append(vertex)
+                if self.discover_time[vertex] < self.low_time[neighbor]:
+                    self.critical_edges.append([vertex, neighbor])
+                
+                              
+    
+    def criticalConnections(self, n: int, connections: List[List[int]]) -> List[List[int]]:
+        # build the adjacent list
+        graph = defaultdict(list)
+        visited = set()
         
-            elif neighbor != parent[vertex]:
-                # back edge
-                low[vertex] = min((low[vertex], low[neighbor]))
+        for edge in connections:
+            graph[edge[0]].append(edge[1])
+            graph[edge[1]].append(edge[0])
+            
+        self._dfs(graph, 0, -1, 0, visited)
+        
+        
+        return self.critical_edges
 
 if __name__ == "__main__":
     solu = Solution()
