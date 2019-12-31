@@ -62,3 +62,54 @@ class Solution:
             idx += 1
             
         return res
+
+    def calculate_concise(self, s: str) -> int:
+        s = ''.join(filter(lambda ch: ch != ' ', s))
+        queue = deque()
+        
+        left = 0
+        right = 0
+        operators = {}
+        operators['+'] = lambda a, b: a + b
+        operators['-'] = lambda a, b: a - b
+        operators['*'] = lambda a, b: a * b
+        operators['/'] = lambda a, b: a // b
+        
+        while left < len(s) and right < len(s):
+            while right < len(s) and s[right] not in ('+', '-', '*', '/'):
+                right += 1
+            
+            queue.append(int(s[left:right]))
+            
+            if right < len(s):
+                queue.append(s[right])
+
+            left = right + 1
+            right = right + 1
+        
+        sec_queue = deque([queue.popleft()])
+        
+        while queue:
+            if queue[0] in ('+', '-'):
+                sec_queue.append(queue.popleft())
+                sec_queue.append(queue.popleft())
+            else:
+                # evaluate '/' and '*'
+                operator = queue.popleft()
+                right_op = queue.popleft()
+                left_op = sec_queue[-1]
+                
+                evaluated = operators[operator](left_op, right_op)
+                sec_queue[-1] = evaluated
+                
+        res = sec_queue.popleft()
+        
+        while sec_queue:
+            operator = sec_queue.popleft()
+            right_op = sec_queue.popleft()
+            left_op = res
+            
+            evaluated = operators[operator](left_op, right_op)
+            res = evaluated
+            
+        return res
