@@ -5,37 +5,32 @@ class Solution:
         
         res = []
         i = 0
-        inserted = False
-        
         while i < len(intervals):
             if intervals[i][1] < newInterval[0]:
                 res.append(intervals[i])
                 i += 1
             else:
+                res.append(intervals[i])
+                i += 1
                 break
-        
-        if i == len(intervals):
-            res.append(newInterval)
-            return res
-        
-        left_bound = min((intervals[i][0], newInterval[0]))
-        merge_right = False
-        while i < len(intervals) and intervals[i][0] <= newInterval[1]:
-            merge_right = True
-            i += 1
-        
-        i -= 1
-        if merge_right:
-            right_bound = max((intervals[i][1], newInterval[1]))
-            res.append([left_bound, right_bound])
-            i += 1
+                
+        if res[-1][0] > newInterval[1]:
+            # last interval is strictly greater than new interval
+            res.insert(len(res) - 1, newInterval)
+        elif res[-1][1] >= newInterval[0]:
+            res[-1] = [min((res[-1][0], newInterval[0])), 
+                       max((res[-1][1], newInterval[1]))]
         else:
-            right_bound = newInterval[1]
-            res.append([left_bound, right_bound])
-            i += 1
+            res.append(newInterval)
+            
         
         while i < len(intervals):
-            res.append(intervals[i])
+            if res[-1][1] >= intervals[i][0]:
+                res[-1] = [min((res[-1][0], intervals[i][0])),
+                          max((res[-1][1], intervals[i][1]))]
+            else:
+                res.append(intervals[i])
+            
             i += 1
-       
+                
         return res
