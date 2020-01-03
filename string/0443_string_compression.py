@@ -1,32 +1,33 @@
 class Solution:
     def compress(self, chars: list) -> int:
-        if len(chars) == 1:
-            return 1
+        """
+        aaaabccc
+        """
+        cur_idx = 0
+        write = 0
         
-        length = len(chars)
-        cnt = 1
-        prev_ch = chars.pop(0)
-        occur = 1
+        prev = None
+        repeat = 0
         
-        while cnt < length:
-            if chars[0] == prev_ch:
-                occur += 1
-                chars.pop(0)
+        i = 0
+        
+        for i, ch in enumerate(chars):
+            if ch == prev:
+                repeat += 1
             else:
-                chars.append(prev_ch)
+                if repeat >= 2:
+                    for s_num in list(str(repeat)):
+                        chars[write] = s_num
+                        write += 1
                 
-                if occur > 1:
-                    chars.extend(list(str(occur)))
+                chars[write] = ch
+                write += 1
+                prev = ch
+                repeat = 1
                 
-                prev_ch = chars[0]
-                occur = 1
-                chars.pop(0)
-            
-            cnt += 1
-        
-        chars.append(prev_ch)
-        if occur > 1:
-            chars.extend(list(str(occur)))
-            
-        
-        return len(chars)
+        if repeat >= 2:
+            for s_num in list(str(repeat)):
+                chars[write] = s_num
+                write += 1
+                
+        return write
