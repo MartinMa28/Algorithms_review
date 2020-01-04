@@ -1,28 +1,25 @@
 class Solution:
-    
-    def __init__(self):
-        self.memo = {}
-    
-    def _dfs(self, s, words) -> tuple:
-        if s == '':
-            return True, ['']
-        
-        if s in self.memo:
-            return self.memo[s]
-        
-        ans = []
-        for word in words:
-            if s.startswith(word):
-                found, word_break = self._dfs(s[len(word):], words)
-                if found:
-                    ans.extend([word + ' ' + wb for wb in word_break])
-
-        self.memo[s] = len(ans) > 0, ans
-        return len(ans) > 0, ans
-                    
-        
+            
     def wordBreak(self, s: str, wordDict: list) -> list:
-        ans = self._dfs(s, wordDict)[1]
-        return [a[:-1] for a in ans]
-                
+        memo = {}
+        
+        def _backtrack(s, words) -> list:
+            if not s:
+                return []
+            
+            if s in memo:
+                return memo[s]
+            
+            res = []
+            for w in words:
+                if s == w:
+                    res.append(w)
+                elif s.startswith(w):
+                    for w_break in _backtrack(s[len(w):], words):
+                        res.append(' '.join((w, w_break)))
+            
+            memo[s] = res
+            return res
+        
+        return _backtrack(s, wordDict)
         
