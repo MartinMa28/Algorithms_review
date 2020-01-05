@@ -1,68 +1,73 @@
 from collections import defaultdict
 
 class Solution:
-    
     def __init__(self):
-        self.rows = defaultdict(set)
-        self.cols = defaultdict(set)
-        self.boxes = defaultdict(set)
-        
-    def _is_valid(self, row, col, num):
-        if num not in self.rows[row] and\
-            num not in self.cols[col] and\
-            num not in self.boxes[(row // 3, col // 3)]:
-            return True
-        else:
-            return False
+        self.row_set = defaultdict(set)
+        self.col_set = defaultdict(set)
+        self.box_set = defaultdict(set)
     
-    def _assign(self, board, row, col, num):
-        board[row][col] = num
-        self.rows[row].add(num)
-        self.cols[col].add(num)
-        self.boxes[(row // 3, col // 3)].add(num)
+    def _is_valid(self, board, row, col, num) -> bool:
+        if num in self.row_set[row]:
+            return False
         
-    def _remove(self, board, row, col):
-        n = board[row][col]
+        if num in self.col_set[col]:
+            return False
+        
+        if num in self.box_set[(row // 3, col // 3)]:
+            return False
+        
+        return True
+    
+    
+    def _add_num(self, board, row, col, num):
+        board[row][col] = str(num)
+        self.row_set[row].add(num)
+        self.col_set[col].add(num)
+        self.box_set[(row // 3, col // 3)].add(num)
+        
+    def _remove_num(self, board, row, col):
+        num = board[row][col]
         board[row][col] = '.'
-        self.rows[row].discard(n)
-        self.cols[col].discard(n)
-        self.boxes[(row // 3, col // 3)].discard(n)
-        
+        self.row_set[row].discard(num)
+        self.col_set[col].discard(num)
+        self.box_set[(row // 3, col // 3)].discard(num)
+    
     def _backtrack(self, board, row, col) -> bool:
         if col < 9:
-            if board[row][col] == '.':
-                for n in range(1, 10):
-                    if self._is_valid(row, col, str(n)):
-                        self._assign(board, row, col, str(n))
+            if board[row][col] != '.':
+                return self._backtrack(board, row, col + 1)
+            else:
+                for i in range(1, 10):
+                    if self._is_valid(board, row, col, str(i)):
+                        self._add_num(board, row, col, str(i))
                         if self._backtrack(board, row, col + 1):
                             return True
-
+                    
                         # backtrack
-                        self._remove(board, row, col)
+                        self._remove_num(board, row, col)
                 
                 return False
-            else:
-                return self._backtrack(board, row, col + 1)
         else:
-            col = 0
             row += 1
+            col = 0
             
             if row == 9:
                 return True
             else:
                 return self._backtrack(board, row, col)
-                
     
+                
     def solveSudoku(self, board: list) -> None:
         for i in range(len(board)):
             for j in range(len(board[0])):
                 num = board[i][j]
                 if num != '.':
-                    self.rows[i].add(num)
-                    self.cols[j].add(num)
-                    self.boxes[(i // 3, j // 3)].add(num)
+                    self.row_set[i].add(num)
+                    self.col_set[j].add(num)
+                    self.box_set[(i // 3, j // 3)].add(num)
                     
         self._backtrack(board, 0, 0)
+        
         
 
 if __name__ == "__main__":
