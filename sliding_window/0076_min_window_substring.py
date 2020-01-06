@@ -3,40 +3,45 @@ from collections import defaultdict
 class Solution:
     
     @staticmethod
-    def _cover(s_map, t_map):
-        for key in t_map:
-            if key in s_map and s_map[key] >= t_map[key]:
-                continue
-            else:
+    def _cover(s_cnt, t_cnt):
+        for ch in t_cnt:
+            if t_cnt[ch] > s_cnt[ch]:
                 return False
         
         return True
     
     def minWindow(self, s: str, t: str) -> str:
-        s_map = defaultdict(int)
-        t_map = defaultdict(int)
+        s_cnt = defaultdict(int)
+        t_cnt = {}
         
         for ch in t:
-            t_map[ch] += 1
+            t_cnt[ch] = t_cnt.get(ch, 0) + 1
             
         left = 0
         right = 0
-        min_len = float('inf')
         res = ''
+        min_len = float('inf')
         
         while left < len(s) and right < len(s):
-            while not self._cover(s_map, t_map) and right < len(s):
-                s_map[s[right]] += 1
+            if not self._cover(s_cnt, t_cnt):
+                s_cnt[s[right]] += 1
                 right += 1
-            
-            while self._cover(s_map, t_map):
+            else:
                 if right - left < min_len:
-                    res = s[left: right]
-                    min_len = right - left
-                
-                s_map[s[left]] -= 1
+                    min_len = (right - left)
+                    res = s[left:right]
+                    
+                s_cnt[s[left]] -= 1
                 left += 1
-                
+        
+        while left < len(s) and self._cover(s_cnt, t_cnt):
+            if right - left < min_len:
+                min_len = (right - left)
+                res = s[left:right]
+
+            s_cnt[s[left]] -= 1
+            left += 1
+        
         return res
         
         
