@@ -2,26 +2,24 @@ from collections import deque
 
 class Solution:
     def levelOrder(self, root: TreeNode) -> list:
-        if not root:
-            return []
-        else:
-            res = []
+        res = []
+        
+        if root:
             queue = deque([root])
             
-            while len(queue) > 0:
-                level = []
+            while queue:
+                res.append([node.val for node in queue])
                 next_level = []
-                while len(queue) > 0:
+                
+                while queue:
                     popped = queue.popleft()
-                    level.append(popped.val)
-                    
+
                     if popped.left:
                         next_level.append(popped.left)
-                    
+
                     if popped.right:
                         next_level.append(popped.right)
-                        
-                res.append(level)
+                
                 queue = deque(next_level)
                 
-            return res
+        return res
