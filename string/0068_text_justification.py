@@ -40,3 +40,23 @@ class Solution:
                 break
                 
         return res
+
+def first_not_none(l):
+    res = ''
+
+    i = 0
+    while i < len(l):
+        if not l[i]:
+            i += 1
+        else:
+            while i < len(l):
+                if l[i]:
+                    res += str(l[i])
+                res += ','
+                i += 1
+            
+            break
+    
+    return res
+
+print(first_not_none([None, 1, None, 2, 3]))
