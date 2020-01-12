@@ -1,72 +1,54 @@
 from collections import deque
 
 class Solution:
-    def _is_valid(self, parens):
-        if parens == '':
-            return True
+    @staticmethod
+    def _get_neighbors(s):
+        res = []
+        for idx, ch in enumerate(s):
+            if ch == '(' or ch == ')':
+                res.append(s[:idx] + s[idx + 1:])
         
+        return res
+    
+    @staticmethod
+    def _is_valid(s):
         stack = []
-        for ch in parens:
+        
+        for ch in s:
             if ch == '(':
                 stack.append(ch)
             elif ch == ')':
-                if len(stack) > 0:
+                if stack:
                     stack.pop()
                 else:
                     return False
-                
-        if len(stack) == 0:
-            return True
-        else:
-            return False
+        
+        return len(stack) == 0
         
     
     def removeInvalidParentheses(self, s: str) -> list:
-        if self._is_valid(s):
-            return [s]
+        queue = deque([s])
+        found = False
+        visited = set()
+        res = []
         
-        results = []
-        
-        odd_q = deque([s])
-        even_q = deque()
-        found_valid = False
-        
-        while (len(odd_q) > 0 or len(even_q) > 0) and not found_valid:
-            if len(odd_q) > 0:
-                while len(odd_q) > 0:
-                    popped = odd_q.popleft()
-                    if self._is_valid(popped):
-                        results.append(popped)
-                        found_valid = True
-                        # get all of possible valid results from this level
-                        while len(odd_q) > 0:
-                            possible = odd_q.popleft()
-                            if self._is_valid(possible):
-                                results.append(possible)
-                    else:
-                        for i in range(len(popped)):
-                            if popped[i] == '(' or popped[i] == ')':
-                                one_less = popped[:i] + popped[i+1:]
-                                if one_less not in even_q:
-                                    even_q.append(one_less)
-                                
-            else:
-                while len(even_q) > 0:
-                    popped = even_q.popleft()
-                    if self._is_valid(popped):
-                        results.append(popped)
-                        found_valid = True
-                        # get all of possible valid results from this level
-                        while len(even_q) > 0:
-                            possible = even_q.popleft()
-                            if self._is_valid(possible):
-                                results.append(possible)
-                                
-                    else:
-                        for i in range(len(popped)):
-                            if popped[i] == '(' or popped[i] == ')':
-                                one_less = popped[:i] + popped[i+1:]
-                                if one_less not in odd_q:
-                                    odd_q.append(one_less)
-        
-        return results
+        while queue:
+            next_level = []
+            
+            while queue:
+                popped = queue.popleft()
+
+                if self._is_valid(popped):
+                    res.append(popped)
+                    found = True
+
+                if not found:
+                    for neighbor in self._get_neighbors(popped):
+                        if neighbor not in visited:
+                            visited.add(neighbor)
+                            next_level.append(neighbor)
+            
+            if not found:
+                queue = deque(next_level)
+                
+        return res

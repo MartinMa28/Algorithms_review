@@ -21,8 +21,9 @@ def _validate_float(s_num) -> bool:
         return False
 
             
-            
-            
+class PostFixNotationError(Exception):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)        
 
 
 
@@ -41,7 +42,7 @@ def eval_postfix(tokens):
             if _validate_float(t):
                 stack.append(float(t))
             else:
-                raise Exception('Invalid input operands')
+                raise PostFixNotationError('Invalid input operands')
         else:
             try:
                 right_op = stack.pop()
@@ -50,18 +51,18 @@ def eval_postfix(tokens):
                 evaluated = operators[t](left_op, right_op)
                 stack.append(evaluated)
             except IndexError as err:
-                raise Exception('Each binary operator must have 2 operands')
+                raise PostFixNotationError('Each binary operator must have 2 operands')
             except ZeroDivisionError as err:
-                raise Exception('Cannot be divided by zero')
+                raise PostFixNotationError('Cannot be divided by zero')
             except KeyError:
-                raise Exception('Un-supported operator')
+                raise PostFixNotationError('Un-supported operator')
     
     if len(stack) > 1:
-        raise Exception('Extra operands in the input!')
+        raise ExcepPostFixNotationErrortion('Extra operands in the input!')
     else:
         return stack.pop()
 
 
 if __name__ == "__main__":
     print(eval_postfix(['3.5', '3', '+', '2', '*', '3', '5', '/', '-', '10',
-                        '+', '2', '-3.', '*', '-']))              
+                        '+', '2', '-3.', '*', '|']))              
