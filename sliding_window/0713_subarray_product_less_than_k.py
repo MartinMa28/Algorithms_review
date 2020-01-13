@@ -1,33 +1,33 @@
 class Solution:
-    def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+    def numSubarrayProductLessThanK(self, nums: list, k: int) -> int:
         '''
-        100
-        10 5 2 6
-        
-           l
-               r
-        
-        [[10], [10, 5], [5], [5, 2], [2], [5, 2, 6], [2, 6], [6]]
+        10  5  2  6            100
+            l
+                  r
+               
+               
+        [10], [10 5], [5], [5 2], [5 2 6]. [2], [2 6], [6]
         '''
-        if not nums:
-            return 0
-        
         if k <= 1:
             return 0
         
+        prod = 1
         left = 0
         right = 0
-        cur_prod = 1
         cnt = 0
+        max_prod = prod
         
         while right < len(nums):
-            cur_prod *= nums[right]
+            prod *= nums[right]
             
-            while cur_prod >= k:
-                cur_prod /= nums[left]
+            while prod >= k:
+                prod /= nums[left]
                 left += 1
-                
+            
+            max_prod = max(max_prod, prod)
+            
             cnt += (right - left) + 1
             right += 1
-            
+        
+        print(max_prod)
         return cnt
