@@ -74,7 +74,7 @@ def _is_integer(s_num):
         return False
 
 def validate_num(s_num):
-    if not s:
+    if not s_num:
         return False
 
     digits_set = set([str(n) for n in range(10)])

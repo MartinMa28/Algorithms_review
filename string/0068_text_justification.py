@@ -45,7 +45,7 @@ def justify(s, max_width):
     right = 0
 
     while left < len(s) and right < len(s):
-        if s[right].isalpha():
+        if s[right].isalpha() or s[right].isdecimal():
             right += 1
         else:
             if s[left:right]:
@@ -58,12 +58,18 @@ def justify(s, max_width):
             left = right
     
     words.append(s[left:right])
+    print(words)
 
     res = []
     i = 0
 
     while i < len(words):
-        line_len = words[i]
+        if words[i] == '\n':
+            i += 1
+            if i == len(words):
+                break
+
+        line_len = len(words[i])
         line_words = [words[i]]
         i += 1
 
@@ -82,8 +88,8 @@ def justify(s, max_width):
             num_chunks = len(line_words) - 1
 
             for w in line_words:
+                line += w
                 if num_chunks > 0:
-                    line += w
                     line += ' ' * ceil(num_spaces / num_chunks)
                     num_spaces -= ceil(num_spaces / num_chunks)
                     num_chunks -= 1
@@ -91,8 +97,7 @@ def justify(s, max_width):
             line += ' ' * (max_width - len(line))
             res.append(line)
 
-            if words[i] == '\n':
-                i += 1
+            
         else:
             line = ' '.join(line_words)
             line += ' ' * (max_width - len(line))
@@ -103,4 +108,4 @@ def justify(s, max_width):
     return res
 
         
-justify('hello, world\n,Maritn', 12)
+print(justify('hello, world12\n,Maritn28', 14))
