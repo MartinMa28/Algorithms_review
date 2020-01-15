@@ -1,24 +1,36 @@
-def _validate_float(s_num) -> bool:
-    s_num = s_num.strip()
-    
-    if s_num[0] == '+' or s_num[0] == '-':
-        s_num = s_num[1:]
-
-    if s_num.isdecimal():
-        return True
-
-    splitted = s_num.split('.')
-
-    if len(splitted) != 2:
+def _only_digits(s_num):
+    if not s_num:
         return False
-    elif splitted[0] and splitted[1]:
-        return splitted[0].isdecimal() and splitted[1].isdecimal()
-    elif splitted[0]:
-        return splitted[0].isdecimal()
-    elif splitted[1]:
-        return splitted[1].isdecimal()
+
+    digits = set([str(n) for n in range(10)])
+
+    for ch in s_num:
+        if ch not in digits:
+            return False
+    return True
+
+def _is_integer(s_num):
+    if not s_num:
+        return False
     else:
-        return False
+        if s_num[0] == '+' or s_num[0] == '-':
+            s_num = s_num[1:]
+
+        if s_num:
+            return _only_digits(s_num) and s_num[0] != '0'
+        else:
+            return False
+
+def _is_float(s_num) -> bool:
+    if _is_integer(s_num):
+        return True
+    else:
+
+        splitted_dot = s_num.split('.')
+        if len(splitted_dot) != 2:
+            return False
+        else:
+            return _is_integer(splitted_dot[0]) and _only_digits(splitted_dot[1])
 
             
 class PostFixNotationError(Exception):
@@ -39,7 +51,7 @@ def eval_postfix(tokens):
 
     for t in tokens:
         if t not in operators:
-            if _validate_float(t):
+            if _is_float(t):
                 stack.append(float(t))
             else:
                 raise PostFixNotationError('Invalid input operands')
@@ -54,15 +66,14 @@ def eval_postfix(tokens):
                 raise PostFixNotationError('Each binary operator must have 2 operands')
             except ZeroDivisionError as err:
                 raise PostFixNotationError('Cannot be divided by zero')
-            except KeyError:
-                raise PostFixNotationError('Un-supported operator')
+            
     
     if len(stack) > 1:
-        raise ExcepPostFixNotationErrortion('Extra operands in the input!')
+        raise PostFixNotationError('Extra operands in the input!')
     else:
         return stack.pop()
 
 
 if __name__ == "__main__":
     print(eval_postfix(['3.5', '3', '+', '2', '*', '3', '5', '/', '-', '10',
-                        '+', '2', '-3.', '*', '|']))              
+                        '+', '2', '-3.0', '*', '-']))              
