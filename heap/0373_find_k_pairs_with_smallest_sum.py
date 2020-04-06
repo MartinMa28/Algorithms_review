@@ -1,7 +1,7 @@
 import heapq
 
 class Solution:
-    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+    def kSmallestPairs(self, nums1: list, nums2: list, k: int) -> list:
         if not nums1 or not nums2:
             return []
         
